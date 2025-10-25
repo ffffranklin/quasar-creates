@@ -12,9 +12,7 @@ Here's a list of my learnings while building this website. I will write more abo
 
 ## Prisma
 
-- I like that `prisma migrate` installs the client and instantiates/updates the db with useful error messages
-- The prisma getting-started workflow isn't easy to understand from the documentation
-
+- The prisma getting-started workflow isn't easy to follow in the documentation
 
 ## Vite
 

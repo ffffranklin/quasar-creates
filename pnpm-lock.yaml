@@ -11,6 +11,9 @@ importers:
       '@prisma/adapter-better-sqlite3':
         specifier: ^6.18.0
         version: 6.18.0
+      '@prisma/client':
+        specifier: ^6.18.0
+        version: 6.18.0(typescript@5.9.3)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -417,6 +420,18 @@ packages:
 
   '@prisma/adapter-better-sqlite3@6.18.0':
     resolution: {integrity: sha512-YBok05ezVdJ0j62bkvVEb7Pf1jkglOXpWgBzU+lolZg+131cD3gSwTWoiNRmA+74HI6dHhOjzpsod50DiMoI2w==}
+
+  '@prisma/client@6.18.0':
+    resolution: {integrity: sha512-jnL2I9gDnPnw4A+4h5SuNn8Gc+1mL1Z79U/3I9eE2gbxJG1oSA+62ByPW4xkeDgwE0fqMzzpAZ7IHxYnLZ4iQA==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+      typescript:
+        optional: true
 
   '@prisma/debug@6.18.0':
     resolution: {integrity: sha512-PMVPMmxPj0ps1VY75DIrT430MoOyQx9hmm174k6cmLZpcI95rAPXOQ+pp8ANQkJtNyLVDxnxVJ0QLbrm/ViBcg==}
@@ -2407,6 +2422,10 @@ snapshots:
     dependencies:
       '@prisma/driver-adapter-utils': 6.18.0
       better-sqlite3: 11.10.0
+
+  '@prisma/client@6.18.0(typescript@5.9.3)':
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@prisma/debug@6.18.0': {}
 
