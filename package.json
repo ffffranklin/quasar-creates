@@ -10,9 +10,12 @@
     "test": "pnpm test:unit",
     "test:unit": "vitest -c ./vitest.config.unit.ts",
     "test:unit:ui": "vitest -c ./vitest.config.unit.ts --ui",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:db:push": "prisma db push"
+    "prisma": "eval $(grep '^DATABASE_URL' .env) prisma",
+    "prisma:generate": "pnpm run prisma generate",
+    "prisma:migrate:dev": "pnpm run prisma migrate dev",
+    "prisma:migrate:reset": "pnpm run prisma migrate reset",
+    "prisma:db:push": "pnpm run prisma db push",
+    "prisma:db:seed": "pnpm run prisma db seed"
   },
   "engines": {
     "node": "^24.0.0",
@@ -43,6 +46,5 @@
     "typescript": "^5",
     "vitest": "^4.0.3",
     "vitest-mock-extended": "^3.1.0"
-  },
-  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8"
+  }
 }
