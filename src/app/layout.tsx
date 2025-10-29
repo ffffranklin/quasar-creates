@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {Cinzel_Decorative, Roboto, Roboto_Mono} from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const cinzelDecorative = Cinzel_Decorative({
   weight: '400',
@@ -32,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <body
         className={`${cinzelDecorative.variable} ${roboto.variable} ${robotoMono.variable} antialiased`}
       >
