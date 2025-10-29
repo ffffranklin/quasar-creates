@@ -12,8 +12,8 @@ export const SiteLayout = ({ children }: React.PropsWithChildren) => {
           height={41}
         />
       </header>
-      <main className="flex justify-center sm:w-full">
-        <div className="md:w-192">
+      <main className="flex justify-center w-full">
+        <div className="w-full px-4 md:w-192">
           {children}
         </div>
       </main>

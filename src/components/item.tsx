@@ -1,5 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
-import { PropsWithChildren } from "react";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 interface ItemProps {
   imageUrl: string,
@@ -7,16 +6,16 @@ interface ItemProps {
   price: string
 }
 
-function Item({imageUrl, title, price}: PropsWithChildren<ItemProps>) {
+function Item({imageUrl, title, price}: ItemProps) {
   return (
     <Card>
       <CardContent>
         <img width="300" src={imageUrl || 'https://i.imgur.com/CnhiMyx.jpeg'} />
       </CardContent>
-      <CardFooter>
+      <CardHeader>
         <CardTitle>{ title }</CardTitle>
         <CardDescription>{ price }</CardDescription>
-      </CardFooter>
+      </CardHeader>
     </Card>
   )
 }
