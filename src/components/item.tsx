@@ -10,7 +10,7 @@ function Item({imageUrl, title, price}: ItemProps) {
   return (
     <Card>
       <CardContent>
-        <img width="300" src={imageUrl || 'https://i.imgur.com/CnhiMyx.jpeg'} />
+        <img width="300" src={imageUrl} />
       </CardContent>
       <CardHeader>
         <CardTitle>{ title }</CardTitle>

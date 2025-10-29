@@ -1,15 +1,25 @@
 import {SiteLayout} from "@/components/site-layout";
 import {Item} from "@/components/item";
+import prisma from "@/lib/prisma";
 
-export default function Home() {
-  const items = [
-    {
-      id: 1,
-      imageUrl: '',
-      title: 'hi',
-      price:'$700'
+async function getItems() {
+  const items = await prisma.item.findMany({
+    include: {
+      photos: true
     }
-  ];
+  })
+  return items.map((item)=> ({
+    id: item.id,
+    imageUrl: item.photos[0].location || '',
+    title: item.title,
+    price: item.content || ''
+  }))
+}
+
+
+export default async function Home() {
+  const items = await getItems();
+
   return (
     <SiteLayout>
       {items.map(({ id, imageUrl, title, price })=> (
