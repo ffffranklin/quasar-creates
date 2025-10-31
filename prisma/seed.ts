@@ -1,14 +1,14 @@
-import prismaClient from "@/lib/prisma-client";
+import prismaClient from '@/lib/prisma-client';
 
 async function main() {
   const admin = await prismaClient.user.upsert({
-    where: {email: 'admin@quasarcreates.com'},
+    where: { email: 'admin@quasarcreates.com' },
     update: {},
     create: {
       email: 'admin@quasarcreates.com',
       name: 'Admin',
-    }
-  })
+    },
+  });
 
   const product = ({
     title = 'Mindnight Express Bag',
@@ -17,14 +17,14 @@ async function main() {
     author = {
       connect: {
         id: admin.id,
-      }
-    }
-  }:{
-    title?: string,
-    content?: string,
-    photoLocation?: string,
-    author?: {connect: {id: number}}
-  })=> {
+      },
+    },
+  }: {
+    title?: string;
+    content?: string;
+    photoLocation?: string;
+    author?: { connect: { id: number } };
+  }) => {
     return {
       data: {
         title,
@@ -34,35 +34,34 @@ async function main() {
           create: {
             location: photoLocation,
             author,
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    };
+  };
   const adminProduct3 = await prismaClient.product.create(
     product({
-      content:'$900',
+      content: '$900',
       photoLocation: 'https://i.imgur.com/CV8RU6I.jpeg',
     })
   );
   const adminProduct1 = await prismaClient.product.create(
     product({
-      content:'$1300',
+      content: '$1300',
       photoLocation: 'https://i.imgur.com/5MBW5Mi.jpeg',
     })
   );
 
   const adminProduct2 = await prismaClient.product.create(
     product({
-      content:'$700',
+      content: '$700',
       photoLocation: 'https://i.imgur.com/Ec04lTy.jpeg',
     })
   );
 
-
   const adminProduct4 = await prismaClient.product.create(
     product({
-      content:'$900',
+      content: '$900',
       photoLocation: 'https://i.imgur.com/a3w58bR.jpeg',
     })
   );
@@ -70,10 +69,10 @@ async function main() {
 
 main()
   .then(async () => {
-    await prismaClient.$disconnect()
+    await prismaClient.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prismaClient.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prismaClient.$disconnect();
+    process.exit(1);
+  });

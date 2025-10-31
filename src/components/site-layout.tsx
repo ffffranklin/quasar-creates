@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import Image from "next/image";
+import React, { Fragment } from 'react';
+import Image from 'next/image';
 
 export const SiteLayout = ({ children }: React.PropsWithChildren) => {
   return (
@@ -13,11 +13,9 @@ export const SiteLayout = ({ children }: React.PropsWithChildren) => {
         />
       </header>
       <main className="flex justify-center w-full">
-        <div className="w-full px-4 lg:w-192">
-          {children}
-        </div>
+        <div className="w-full px-4 lg:w-192">{children}</div>
       </main>
       <footer></footer>
     </Fragment>
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
-import {Metadata} from "next";
-import {SiteLayout} from "@/components/site-layout";
-import {EditProductForm} from "@/app/edit/product/[id]/_components/edit-product-form";
+import { Metadata } from 'next';
+import { SiteLayout } from '@/components/site-layout';
+import { EditProductForm } from '@/app/edit/product/[id]/_components/edit-product-form';
 
 export const metadata: Metadata = {
   title: 'Edit Product Page',
@@ -12,7 +12,5 @@ export default async function EditProductPage() {
     <SiteLayout>
       <EditProductForm />
     </SiteLayout>
-  )
+  );
 }
-
-

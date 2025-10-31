@@ -1,29 +1,29 @@
-import type { Metadata } from "next";
-import {Cinzel_Decorative, Roboto, Roboto_Mono} from "next/font/google";
-import "./globals.css";
-import Head from "next/head";
+import type { Metadata } from 'next';
+import { Cinzel_Decorative, Roboto, Roboto_Mono } from 'next/font/google';
+import './globals.css';
+import Head from 'next/head';
 
 const cinzelDecorative = Cinzel_Decorative({
   weight: '400',
   variable: '--font-cinzel-decorative',
-  subsets: ['latin']
-})
+  subsets: ['latin'],
+});
 
 const roboto = Roboto({
   weight: '400',
   variable: '--font-roboto',
-  subsets: ['latin']
-})
+  subsets: ['latin'],
+});
 
 const robotoMono = Roboto_Mono({
   weight: '400',
   variable: '--font-roboto-mono',
-  subsets: ['latin']
-})
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
-  title: "Quasar Creates",
-  description: "Unique and custom artisanal handmade bags",
+  title: 'Quasar Creates',
+  description: 'Unique and custom artisanal handmade bags',
 };
 
 export default function RootLayout({
