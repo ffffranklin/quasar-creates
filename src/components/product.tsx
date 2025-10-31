@@ -1,12 +1,12 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
-interface ItemProps {
+interface ProductProps {
   imageUrl: string,
   title: string,
   price: string
 }
 
-function Item({imageUrl, title, price}: ItemProps) {
+function Product({imageUrl, title, price}: ProductProps) {
   return (
     <Card className="w-full lg:w-90 h-min flex-none mb-4">
       <CardContent className="overflow-hidden">
@@ -20,4 +20,4 @@ function Item({imageUrl, title, price}: ItemProps) {
   )
 }
 
-export { Item }
+export { Product }

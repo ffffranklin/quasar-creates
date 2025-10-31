@@ -1,7 +1,7 @@
-import prisma from "@/lib/prisma";
+import prismaClient from "@/lib/prisma-client";
 
 async function main() {
-  const admin = await prisma.user.upsert({
+  const admin = await prismaClient.user.upsert({
     where: {email: 'admin@quasarcreates.com'},
     update: {},
     create: {
@@ -10,7 +10,7 @@ async function main() {
     }
   })
 
-  const item = ({
+  const product = ({
     title = 'Mindnight Express Bag',
     content = 'It is the mission of QuasarCreates. to design and create products that are innovative in design, are unique, and are driven by high-quality standards; to celebrate the individuality of the Nena Society and the artistry of cultures around the world',
     photoLocation = 'https://i.imgur.com/4YmhODN.jpeg',
@@ -39,29 +39,29 @@ async function main() {
       }
     }
   }
-  const adminItem3 = await prisma.item.create(
-    item({
+  const adminProduct3 = await prismaClient.product.create(
+    product({
       content:'$900',
       photoLocation: 'https://i.imgur.com/CV8RU6I.jpeg',
     })
   );
-  const adminItem1 = await prisma.item.create(
-    item({
+  const adminProduct1 = await prismaClient.product.create(
+    product({
       content:'$1300',
       photoLocation: 'https://i.imgur.com/5MBW5Mi.jpeg',
     })
   );
 
-  const adminItem2 = await prisma.item.create(
-    item({
+  const adminProduct2 = await prismaClient.product.create(
+    product({
       content:'$700',
       photoLocation: 'https://i.imgur.com/Ec04lTy.jpeg',
     })
   );
 
 
-  const adminItem4 = await prisma.item.create(
-    item({
+  const adminProduct4 = await prismaClient.product.create(
+    product({
       content:'$900',
       photoLocation: 'https://i.imgur.com/a3w58bR.jpeg',
     })
@@ -70,10 +70,10 @@ async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prismaClient.$disconnect()
   })
   .catch(async (e) => {
     console.error(e)
-    await prisma.$disconnect()
+    await prismaClient.$disconnect()
     process.exit(1)
   })

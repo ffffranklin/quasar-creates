@@ -1,30 +1,30 @@
 import {SiteLayout} from "@/components/site-layout";
-import {Item} from "@/components/item";
-import prisma from "@/lib/prisma";
+import {Product} from "@/components/product";
+import prismaClient from "@/lib/prisma-client";
 
 async function getItems() {
-  const items = await prisma.item.findMany({
+  const products = await prismaClient.product.findMany({
     include: {
       photos: true
     }
   })
-  return items.map((item)=> ({
-    id: item.id,
-    imageUrl: item.photos[0].location || '',
-    title: item.title,
-    price: item.content || ''
+  return products.map((product)=> ({
+    id: product.id,
+    imageUrl: product.photos[0].location || '',
+    title: product.title,
+    price: product.content || ''
   }))
 }
 
 
 export default async function Home() {
-  const items = await getItems();
+  const products = await getItems();
 
   return (
     <SiteLayout>
-      <div className="flex justify-between flex-wrap flex-col h-lvh">
-        {items.map(({ id, imageUrl, title, price })=> (
-          <Item
+      <div className="flex justify-between flex-wrap flex-col h-auto lg:h-screen">
+        {products.map(({ id, imageUrl, title, price })=> (
+          <Product
             key={id}
             imageUrl={imageUrl}
             title={title}
