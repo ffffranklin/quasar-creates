@@ -1,4 +1,4 @@
-async function EditForm() {
+async function EditProductForm() {
   return (
     <form>
       form goes here here...
@@ -6,4 +6,4 @@ async function EditForm() {
   );
 }
 
-export {EditForm}
+export {EditProductForm}
