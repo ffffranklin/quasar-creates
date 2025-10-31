@@ -1,18 +1,18 @@
 import {afterAll, beforeEach, describe, expect, it} from "vitest";
-import prisma from "@/lib/prisma";
+import prismaClient from "@/lib/prisma-client";
 
 describe('integration tests', ()=> {
   beforeEach(async ()=> {
-    await prisma.$transaction([
-      prisma.item.deleteMany({}),
-      prisma.profile.deleteMany({}),
-      prisma.photo.deleteMany({}),
-      prisma.user.deleteMany({})
+    await prismaClient.$transaction([
+      prismaClient.item.deleteMany({}),
+      prismaClient.profile.deleteMany({}),
+      prismaClient.photo.deleteMany({}),
+      prismaClient.user.deleteMany({})
     ])
   })
 
   afterAll(async ()=> {
-    await prisma.$disconnect();
+    await prismaClient.$disconnect();
   })
 
   describe('when user created', ()=> {
@@ -22,11 +22,11 @@ describe('integration tests', ()=> {
         name: 'Me'
       };
 
-      await prisma.user.create({
+      await prismaClient.user.create({
         data: userData
       })
 
-      const found = await prisma.user.findFirst({
+      const found = await prismaClient.user.findFirst({
         where: {
           email: userData.email
         }
@@ -46,10 +46,10 @@ describe('integration tests', ()=> {
         name: 'Me'
       };
 
-      const user = await prisma.user.create({
+      const user = await prismaClient.user.create({
         data: userData
       })
-      const item = await prisma.item.create({
+      const item = await prismaClient.item.create({
         data: {
           title: 'awesome',
           author: {
@@ -74,11 +74,11 @@ describe('integration tests', ()=> {
         }
       };
 
-      await prisma.photo.create({
+      await prismaClient.photo.create({
         data: photoData,
       })
 
-      const found = await prisma.user.findFirst({
+      const found = await prismaClient.user.findFirst({
         where: {
           email: userData.email
         }
