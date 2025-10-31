@@ -22,14 +22,16 @@ export default async function Home() {
 
   return (
     <SiteLayout>
-      {items.map(({ id, imageUrl, title, price })=> (
-        <Item
-          key={id}
-          imageUrl={imageUrl}
-          title={title}
-          price={price}
-        />
-      ))}
+      <div className="flex justify-between flex-wrap flex-col h-lvh">
+        {items.map(({ id, imageUrl, title, price })=> (
+          <Item
+            key={id}
+            imageUrl={imageUrl}
+            title={title}
+            price={price}
+          />
+        ))}
+      </div>
     </SiteLayout>
   );
 }

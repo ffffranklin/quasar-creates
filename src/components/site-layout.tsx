@@ -8,12 +8,12 @@ export const SiteLayout = ({ children }: React.PropsWithChildren) => {
         <Image
           src={'/illo_starburst-separator-logo.png'}
           alt={'Quasar Creates Logo'}
-          width={300}
-          height={41}
+          width={250}
+          height={40}
         />
       </header>
       <main className="flex justify-center w-full">
-        <div className="w-full px-4 md:w-192">
+        <div className="w-full px-4 lg:w-192">
           {children}
         </div>
       </main>
