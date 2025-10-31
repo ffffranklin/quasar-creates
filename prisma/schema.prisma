@@ -8,7 +8,7 @@ generator client {
   output   = "../src/generated/prisma/client"
 }
 
-model Item {
+model Product {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -21,12 +21,12 @@ model Item {
 }
 
 model Photo {
-  id       Int     @id @default(autoincrement())
-  location String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  item      Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  itemId    Int
+  id          Int     @id @default(autoincrement())
+  location    String?
+  author      User    @relation(fields: [authorId], references: [id])
+  authorId    Int
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   Int
 }
 
 model Profile {
@@ -37,10 +37,10 @@ model Profile {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  items   Item[]
-  photos  Photo[]
-  profile Profile?
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  name       String?
+  products   Product[]
+  photos     Photo[]
+  profile    Profile?
 }

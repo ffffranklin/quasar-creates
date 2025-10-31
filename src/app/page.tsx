@@ -3,7 +3,7 @@ import {Item} from "@/components/item";
 import prismaClient from "@/lib/prisma-client";
 
 async function getItems() {
-  const items = await prismaClient.item.findMany({
+  const items = await prismaClient.product.findMany({
     include: {
       photos: true
     }

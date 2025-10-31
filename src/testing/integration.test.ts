@@ -4,7 +4,7 @@ import prismaClient from "@/lib/prisma-client";
 describe('integration tests', ()=> {
   beforeEach(async ()=> {
     await prismaClient.$transaction([
-      prismaClient.item.deleteMany({}),
+      prismaClient.product.deleteMany({}),
       prismaClient.profile.deleteMany({}),
       prismaClient.photo.deleteMany({}),
       prismaClient.user.deleteMany({})
@@ -49,7 +49,7 @@ describe('integration tests', ()=> {
       const user = await prismaClient.user.create({
         data: userData
       })
-      const item = await prismaClient.item.create({
+      const item = await prismaClient.product.create({
         data: {
           title: 'awesome',
           author: {
@@ -67,7 +67,7 @@ describe('integration tests', ()=> {
             email: 'me@home.com'
           }
         },
-        item: {
+        product: {
           connect: {
             id: item.id
           }
