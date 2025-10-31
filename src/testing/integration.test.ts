@@ -49,7 +49,7 @@ describe('integration tests', ()=> {
       const user = await prismaClient.user.create({
         data: userData
       })
-      const item = await prismaClient.product.create({
+      const product = await prismaClient.product.create({
         data: {
           title: 'awesome',
           author: {
@@ -69,7 +69,7 @@ describe('integration tests', ()=> {
         },
         product: {
           connect: {
-            id: item.id
+            id: product.id
           }
         }
       };
