@@ -10,11 +10,11 @@ import Link from 'next/link';
 interface ProductProps {
   imageUrl: string;
   title: string;
-  price: string;
+  content: string;
   id: number;
 }
 
-function ProductCard({ id, imageUrl, title, price }: ProductProps) {
+function ProductCard({ id, imageUrl, title, content }: ProductProps) {
   return (
     <Link href={`/edit/product/${id}`}>
       <Card className="w-full lg:w-90 h-min flex-none mb-4">
@@ -23,7 +23,7 @@ function ProductCard({ id, imageUrl, title, price }: ProductProps) {
         </CardContent>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription>{price}</CardDescription>
+          <CardDescription>{content}</CardDescription>
         </CardHeader>
       </Card>
     </Link>

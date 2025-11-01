@@ -19,11 +19,19 @@ export default async function EditProductPage({
 }) {
   const { id } = await params;
 
-  const product = await getProductById(Number(id));
+  const { error, product } = await getProductById(Number(id));
 
   return (
     <SiteLayout>
-      <EditProductForm title={product.title} content={product.content || ''} />
+      {error ? (
+        <div>Product not found</div>
+      ) : (
+        <EditProductForm
+          id={product.id}
+          title={product.title}
+          content={product.content}
+        />
+      )}
     </SiteLayout>
   );
 }

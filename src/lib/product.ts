@@ -1,7 +1,14 @@
 import prismaClient from '@/lib/prisma-client';
 import prisma from '@/lib/prisma-client';
 
-export async function getProducts() {
+export async function getProducts(): Promise<
+  Array<{
+    title: string;
+    imageUrl: string;
+    content: string;
+    id: number;
+  }>
+> {
   const products = await prismaClient.product.findMany({
     include: {
       photos: true,
@@ -12,20 +19,32 @@ export async function getProducts() {
     id: product.id,
     imageUrl: product.photos[0].location || '',
     title: product.title,
-    price: product.content || '',
+    content: product.content || '',
   }));
 }
 
 export async function getProductById(id: number) {
-  const product = await prisma.product.findFirst({
-    where: {
-      id: id,
-    },
-  });
+  let error;
+  let product;
+
+  try {
+    product = await prisma.product.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!product) throw new Error('product not found');
+  } catch (e) {
+    error = e;
+  }
 
   return {
-    title: product?.title ?? '',
-    content: product?.content ?? '',
-    ...product,
+    product: {
+      id: Number(product?.id),
+      title: product?.title ?? '',
+      content: product?.content ?? '',
+    },
+    error,
   };
 }

@@ -16,28 +16,34 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
 interface EditProductFormProps {
+  id: number;
   title: string;
   content: string;
 }
 
-const formSchema = z.object({
+interface EditProductFormInnerProps {
+  title: string;
+  content: string;
+  onSubmit: (values: z.infer<typeof editProductFormSchema>) => void;
+}
+
+export const editProductFormSchema = z.object({
   title: z.string().min(0).max(70),
   content: z.string().min(0).max(2000),
 });
 
-function EditProductForm({ title, content }: EditProductFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+function EditProductFormInner({
+  title,
+  content,
+  onSubmit,
+}: EditProductFormInnerProps) {
+  const form = useForm<z.infer<typeof editProductFormSchema>>({
+    resolver: zodResolver(editProductFormSchema),
     defaultValues: {
       title,
       content,
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO call api client to submit form
-    console.log(values);
-  }
 
   return (
     <Form {...form}>
@@ -72,6 +78,26 @@ function EditProductForm({ title, content }: EditProductFormProps) {
         <Button type={'submit'}>Submit</Button>
       </form>
     </Form>
+  );
+}
+
+function EditProductForm({ id, title, content }: EditProductFormProps) {
+  async function onSubmit(values: z.infer<typeof editProductFormSchema>) {
+    await fetch(`/api/products/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        method: 'post',
+        data: {
+          id,
+          title: values.title,
+          content: values.content,
+        },
+      }),
+    });
+  }
+
+  return (
+    <EditProductFormInner title={title} content={content} onSubmit={onSubmit} />
   );
 }
 

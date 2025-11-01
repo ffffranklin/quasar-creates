@@ -8,13 +8,13 @@ export default async function Home() {
   return (
     <SiteLayout>
       <div className="flex justify-between flex-wrap flex-col h-auto lg:h-screen">
-        {products.map(({ id, imageUrl, title, price }) => (
+        {products.map(({ id, imageUrl, title, content }) => (
           <ProductCard
             key={id}
             id={id}
             imageUrl={imageUrl}
             title={title}
-            price={price}
+            content={content}
           />
         ))}
       </div>
