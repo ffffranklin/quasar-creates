@@ -19,7 +19,7 @@ function ProductCard({ id, imageUrl, title, content }: ProductProps) {
     <Link href={`/edit/product/${id}`}>
       <Card className="w-full lg:w-90 h-min flex-none mb-4">
         <CardContent className="overflow-hidden">
-          <img src={imageUrl} />
+          <img src={imageUrl} alt={`Photo of "${title}" product`} />
         </CardContent>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
