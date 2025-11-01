@@ -9,7 +9,13 @@ export default async function Home() {
     <SiteLayout>
       <div className="flex justify-between flex-wrap flex-col h-auto lg:h-screen">
         {products.map(({ id, imageUrl, title, price }) => (
-          <Product key={id} imageUrl={imageUrl} title={title} price={price} />
+          <Product
+            key={id}
+            id={id}
+            imageUrl={imageUrl}
+            title={title}
+            price={price}
+          />
         ))}
       </div>
     </SiteLayout>
