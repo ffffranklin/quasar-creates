@@ -15,17 +15,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
+interface EditProductFormProps {
+  title: string;
+  content: string;
+}
+
 const formSchema = z.object({
   title: z.string().min(0).max(70),
   content: z.string().min(0).max(2000),
 });
 
-function EditProductForm() {
+function EditProductForm({ title, content }: EditProductFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      content: '',
+      title,
+      content,
     },
   });
 
