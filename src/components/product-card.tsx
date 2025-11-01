@@ -14,7 +14,7 @@ interface ProductProps {
   id: number;
 }
 
-function Product({ id, imageUrl, title, price }: ProductProps) {
+function ProductCard({ id, imageUrl, title, price }: ProductProps) {
   return (
     <Link href={`/edit/product/${id}`}>
       <Card className="w-full lg:w-90 h-min flex-none mb-4">
@@ -30,4 +30,4 @@ function Product({ id, imageUrl, title, price }: ProductProps) {
   );
 }
 
-export { Product };
+export { ProductCard };

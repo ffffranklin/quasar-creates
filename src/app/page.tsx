@@ -1,5 +1,5 @@
 import { SiteLayout } from '@/components/site-layout';
-import { Product } from '@/components/product';
+import { ProductCard } from '@/components/product-card';
 import { getProducts } from '@/lib/product';
 
 export default async function Home() {
@@ -9,7 +9,7 @@ export default async function Home() {
     <SiteLayout>
       <div className="flex justify-between flex-wrap flex-col h-auto lg:h-screen">
         {products.map(({ id, imageUrl, title, price }) => (
-          <Product
+          <ProductCard
             key={id}
             id={id}
             imageUrl={imageUrl}
