@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma-client';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { editProductFormSchema } from '@/lib/schemas';
 
 export async function POST(
   request: NextRequest,
@@ -9,17 +10,16 @@ export async function POST(
   const requestBody = await request.json();
   const { title, content } = await requestBody.data;
 
-  if (title == null || content == null) {
-    return new Response('whoops!', { status: 404 });
+  try {
+    // validate fields
+    editProductFormSchema.parse({ title, content });
+  } catch (e) {
+    return NextResponse.json({ error: e }, { status: 405 });
   }
 
-  console.log({
-    where: { id },
-    data: { title, content },
-  });
   const result = await prisma.product.update({
     where: { id },
-    data: { title, content },
+    data: { title, content } satisfies { title: string; content: string },
   });
 
   return Response.json(result);

@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { editProductFormSchema } from '@/lib/schemas';
 
 interface EditProductFormProps {
   id: number;
@@ -26,11 +27,6 @@ interface EditProductFormInnerProps {
   content: string;
   onSubmit: (values: z.infer<typeof editProductFormSchema>) => void;
 }
-
-export const editProductFormSchema = z.object({
-  title: z.string().min(0).max(70),
-  content: z.string().min(0).max(2000),
-});
 
 function EditProductFormInner({
   title,
@@ -83,17 +79,34 @@ function EditProductFormInner({
 
 function EditProductForm({ id, title, content }: EditProductFormProps) {
   async function onSubmit(values: z.infer<typeof editProductFormSchema>) {
-    await fetch(`/api/products/${id}`, {
-      method: 'POST',
-      body: JSON.stringify({
-        method: 'post',
-        data: {
-          id,
-          title: values.title,
-          content: values.content,
-        },
-      }),
-    });
+    // TODO: consolidate error handling with api-client
+    // TODO: add inline messaging
+    // TODO: add toast messaging
+    try {
+      const resp = await fetch(`/api/products/${id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          method: 'post',
+          data: {
+            id,
+            title: values.title,
+            content: values.content,
+          },
+        }),
+      });
+
+      if (!resp.ok) {
+        const { error } = await resp.json();
+
+        if (error) {
+          console.error(error.name, error.message);
+        } else {
+          console.error('Server responded with unknown error');
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
