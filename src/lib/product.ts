@@ -48,3 +48,19 @@ export async function getProductById(id: number) {
     error,
   };
 }
+
+async function updateProductById(
+  id: number,
+  { title, content }: { title: string; content: string },
+  baseUrl: string
+) {
+  return await fetch(new URL(`/api/products/${id}`, baseUrl), {
+    method: 'post',
+    body: JSON.stringify({
+      method: 'update',
+      data: { id, title, content },
+    }),
+  });
+}
+
+export default updateProductById;

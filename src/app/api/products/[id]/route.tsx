@@ -14,7 +14,7 @@ export async function POST(
     // validate fields
     editProductFormSchema.parse({ title, content });
   } catch (e) {
-    return NextResponse.json({ error: e }, { status: 405 });
+    return NextResponse.json({ error: e }, { status: 400 });
   }
 
   const result = await prisma.product.update({
