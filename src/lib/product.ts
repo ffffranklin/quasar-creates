@@ -1,5 +1,7 @@
 import prismaClient from '@/lib/prisma-client';
 import prisma from '@/lib/prisma-client';
+import { apiClient } from '@/lib/api-client';
+import { AxiosError, AxiosResponse } from 'axios';
 
 export async function getProducts(): Promise<
   Array<{
@@ -54,17 +56,22 @@ async function updateProductById(
   { title, content }: { title: string; content: string },
   baseUrl: string
 ): Promise<{
-  response: Response;
-  error: { message: string; status: number };
+  response: AxiosResponse | null;
+  error: { message: string; status: number } | null;
 }> {
-  const response = await fetch(new URL(`/api/products/${id}`, baseUrl), {
-    method: 'post',
-    body: JSON.stringify({
+  let response: AxiosResponse | null;
+  let error: { message: string; status: number } | null = null;
+
+  try {
+    response = await apiClient.post(`${baseUrl}/api/products/${id}`, {
       method: 'update',
       data: { id, title, content },
-    }),
-  });
-  const error = !response.ok ? (await response.json()).error : null;
+    });
+  } catch (e) {
+    const err: AxiosError = e as AxiosError;
+    response = err.response || null;
+    error = response?.data.error || null;
+  }
 
   return { response, error };
 }

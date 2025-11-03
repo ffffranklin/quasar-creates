@@ -29,7 +29,7 @@ describe('product', () => {
         { title, content },
         baseUrl
       );
-      const actual = await response.json();
+      const actual = response?.data;
       const expected = { id, title, content };
 
       expect(actual).toEqual(expected);
