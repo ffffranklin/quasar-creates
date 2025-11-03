@@ -53,14 +53,20 @@ async function updateProductById(
   id: number,
   { title, content }: { title: string; content: string },
   baseUrl: string
-) {
-  return await fetch(new URL(`/api/products/${id}`, baseUrl), {
+): Promise<{
+  response: Response;
+  error: { message: string; status: number };
+}> {
+  const response = await fetch(new URL(`/api/products/${id}`, baseUrl), {
     method: 'post',
     body: JSON.stringify({
       method: 'update',
       data: { id, title, content },
     }),
   });
+  const error = !response.ok ? (await response.json()).error : null;
+
+  return { response, error };
 }
 
 export default updateProductById;
