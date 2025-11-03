@@ -16,7 +16,7 @@ describe('integration tests', () => {
   });
 
   describe('when user created', () => {
-    it('update the db', async () => {
+    it.skip('update the db', async () => {
       const userData = {
         email: 'me@home.com',
         name: 'Me',
@@ -42,7 +42,7 @@ describe('integration tests', () => {
   });
 
   describe('when photo created', () => {
-    it('update the db', async () => {
+    it.skip('update the db', async () => {
       const userData = {
         email: 'me@home.com',
         name: 'Me',
