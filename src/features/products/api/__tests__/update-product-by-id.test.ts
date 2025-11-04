@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { faker } from '@faker-js/faker/locale/en';
-import updateProductById from '@/lib/product';
 import { server } from '@/testing/setup';
 import { http, HttpResponse } from 'msw';
 import { env } from '@/config/env';
+import { updateProductById } from '@/features/products/api/update-product-by-id';
 
 describe('product', () => {
   let baseUrl: string;

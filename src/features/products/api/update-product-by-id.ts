@@ -1,5 +1,5 @@
-import { apiClient } from '@/lib/api-client';
 import { AxiosError, AxiosResponse } from 'axios';
+import { apiClient } from '@/lib/api-client';
 
 async function updateProductById(
   id: number,
@@ -26,4 +26,4 @@ async function updateProductById(
   return { response, error };
 }
 
-export default updateProductById;
+export { updateProductById };
