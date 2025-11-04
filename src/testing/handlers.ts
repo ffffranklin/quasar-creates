@@ -32,4 +32,29 @@ const updateProductsHandler: HttpHandler = http.post<
   }
 });
 
-export const restHandlers = [updateProductsHandler];
+const uploadPhotosHandler: HttpHandler = http.post(
+  '/api/products/:id/photos',
+  async ({ request }) => {
+    const data = await request.formData();
+    const file = data.get('file');
+
+    if (!file) {
+      return new HttpResponse('Missing document(s)', { status: 400 });
+    }
+
+    if (!(file instanceof File)) {
+      return new HttpResponse('Uploaded document is not a File', {
+        status: 400,
+      });
+    }
+
+    // return HttpResponse.arrayBuffer(request.arrayBuffer(), {
+    //   contentType: 'image/jpeg',
+    // });
+    return HttpResponse.json({
+      contents: await file.text(),
+    });
+  }
+);
+
+export const restHandlers = [updateProductsHandler, uploadPhotosHandler];
