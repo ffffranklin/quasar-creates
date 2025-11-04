@@ -1,11 +1,11 @@
 import { http, HttpResponse, PathParams } from 'msw';
 import { Product } from '@/lib/types';
 import { product } from '@/testing/factories';
-import { TEST_BASE_URL } from '@/testing/constants';
+import { env } from '@/config/env';
 
 export const restHandlers = [
   http.post<PathParams, { method: 'update'; data: Product }>(
-    `${TEST_BASE_URL}/api/products/:id`,
+    `${env.API_URL}/api/products/:id`,
     async ({ request }) => {
       const req = await request.clone().json();
 

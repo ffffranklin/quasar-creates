@@ -1,6 +1,9 @@
 import { setupServer } from 'msw/node';
 import { restHandlers } from '@/testing/handlers';
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
+
+// mocks
+vi.mock(import('@/config/env'));
 
 const server = setupServer(...restHandlers);
 

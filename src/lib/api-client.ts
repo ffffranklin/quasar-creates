@@ -1,8 +1,8 @@
 import Axios from 'axios';
-import { TEST_BASE_URL } from '@/testing/constants';
+import { env } from '@/config/env';
 
 const apiClient = Axios.create({
-  baseURL: TEST_BASE_URL,
+  baseURL: env.API_URL,
 });
 
 export { apiClient };

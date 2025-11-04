@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import 'dotenv/config';
 
 const envSchema = z.object({
   API_URL: z.string(),
 });
 
-const env = createEnv();
+const env: z.infer<typeof envSchema> = createEnv();
 
 function createEnv() {
   const envVars = {

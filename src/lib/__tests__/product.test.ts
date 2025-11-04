@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { faker } from '@faker-js/faker/locale/en';
 import updateProductById from '@/lib/product';
-import { TEST_BASE_URL } from '@/testing/constants';
 import { server } from '@/testing/setup';
 import { http, HttpResponse } from 'msw';
+import { env } from '@/config/env';
 
 describe('product', () => {
   let baseUrl: string;
 
   beforeEach(() => {
-    baseUrl = TEST_BASE_URL;
+    baseUrl = env.API_URL;
   });
 
   describe('when product updated', () => {
@@ -40,7 +40,7 @@ describe('product', () => {
       const errorStatus = 400;
 
       server.use(
-        http.post(`${TEST_BASE_URL}/api/products/:id`, () => {
+        http.post(`${env.API_URL}/api/products/:id`, () => {
           return HttpResponse.json(
             { error: { message: errorMessage, status: errorStatus } },
             { status: errorStatus }
