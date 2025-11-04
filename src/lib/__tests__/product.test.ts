@@ -59,7 +59,5 @@ describe('product', () => {
 
       expect(actual).toEqual(expected);
     });
-
-    it.todo('should return dispatch error');
   });
 });

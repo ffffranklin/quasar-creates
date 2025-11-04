@@ -1,6 +1,7 @@
 import { SiteLayout } from '@/components/site-layout';
 import { ProductCard } from '@/components/product-card';
-import { getProducts } from '@/lib/product';
+
+import { getProducts } from '@/features/products/api/get-products';
 
 export default async function Home() {
   const products = await getProducts();
