@@ -1,28 +1,44 @@
-import { config, S3 } from 'aws-sdk';
-import 'dotenv/config';
+import { env } from '@/config/env';
 
-const s3 = new S3();
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  PutObjectCommandOutput,
+  S3Client,
+} from '@aws-sdk/client-s3';
 
-async function upload(file) {
-  const Bucket: string = process.env.AWS_S3_BUCKET || '';
-  const Key: string = process.env.AWS_ACCESS_KEY_ID || '';
+const s3c = new S3Client({ region: env.AWS_REGION });
+
+async function upload(file: any) {
+  const Bucket: string = env.AWS_S3_BUCKET || '';
+  const Key: string = 'file-name';
   const Body = file.buffer;
 
-  const params: S3.Types.PutObjectRequest = { Bucket, Key, Body };
+  try {
+    const putCommand = new PutObjectCommand({ Bucket, Key, Body });
+    const output: PutObjectCommandOutput = await s3c.send(putCommand);
 
-  s3.upload(params, (err, data) => {
-    if (err) {
-      console.log('Error uploading file:', err);
-    } else {
-      console.log('File uploaded successfully. File location:', data.Location);
-    }
-  });
+    console.log('File uploaded successfully. File location:', output.ETag);
+  } catch (error) {
+    console.log('Error uploading file:', error);
+  }
+}
+
+async function get(key: string) {
+  const Bucket: string = env.AWS_S3_BUCKET || '';
+
+  try {
+    const getCommand = new GetObjectCommand({ Bucket, Key: key });
+    const { Body } = await s3c.send(getCommand);
+
+    return Body?.transformToString();
+  } catch (error) {
+    console.log('Error getting object:', error);
+  }
 }
 
 async function s3Client() {
-  config.update({ region: process.env.AWS_REGION });
-
-  return { upload };
+  return { upload, get };
 }
 
 export { s3Client };
