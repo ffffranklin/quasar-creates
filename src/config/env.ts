@@ -19,20 +19,11 @@ function createEnv() {
   const parsedEnv = envSchema.safeParse(envVars);
   if (!parsedEnv.success) {
     throw new Error(
-      `Invalid env provided.
-  The following variables are missing or invalid:
-  ${formatValidationErrors(parsedEnv.error.flatten().fieldErrors)}
-  `
+      `Invalid env provided. \n ${z.prettifyError(parsedEnv.error)}`
     );
   }
 
   return parsedEnv.data ?? {};
-}
-
-function formatValidationErrors(errors: unknown) {
-  return Object.entries(errors as { [key: string]: string })
-    .map(([k, v]) => `- ${k}: ${v}`)
-    .join('\n');
 }
 
 export { env };
