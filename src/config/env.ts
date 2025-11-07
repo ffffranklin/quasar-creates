@@ -1,5 +1,6 @@
-import { z } from 'zod';
 import 'dotenv/config';
+
+import { z } from 'zod';
 
 const envSchema = z.object({
   API_URL: z.string(),
@@ -12,8 +13,8 @@ const env: z.infer<typeof envSchema> = createEnv();
 function createEnv() {
   const envVars = {
     API_URL: process.env.NEXT_PUBLIC_API_URL,
-    AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
-    AWS_REGION: process.env.AWS_REGION,
+    AWS_S3_BUCKET: process.env.NEXT_PUBLIC_AWS_S3_BUCKET,
+    AWS_REGION: process.env.NEXT_PUBLIC_AWS_REGION,
   };
 
   const parsedEnv = envSchema.safeParse(envVars);
