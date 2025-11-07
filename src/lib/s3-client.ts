@@ -9,16 +9,27 @@ import {
 
 const s3c = new S3Client({ region: env.AWS_REGION });
 
-async function upload(file: any) {
+async function upload(file: File) {
+  if (!file) {
+    throw new Error(
+      'Unable to upload bucket from S3, file contents are undefined'
+    );
+  }
+
+  const fileArrayBuffer: ArrayBuffer = await file.arrayBuffer();
+  // convert to buffer to satisfy Body type signature
+  const fileBuffer: Buffer = Buffer.from(fileArrayBuffer);
   const Bucket: string = env.AWS_S3_BUCKET || '';
-  const Key: string = 'file-name';
-  const Body = file.buffer;
+  const Key: string = `assets/${file.name}`;
+  const Body: Buffer = fileBuffer;
 
   try {
     const putCommand = new PutObjectCommand({ Bucket, Key, Body });
     const output: PutObjectCommandOutput = await s3c.send(putCommand);
 
     console.log('File uploaded successfully. File location:', output.ETag);
+
+    return output;
   } catch (error) {
     console.log('Error uploading file:', error);
   }
@@ -37,7 +48,7 @@ async function get(key: string) {
   }
 }
 
-async function s3Client() {
+function s3Client() {
   return { upload, get };
 }
 

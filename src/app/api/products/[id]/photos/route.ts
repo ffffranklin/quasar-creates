@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { s3Client } from '@/lib/s3-client';
 
+const s3 = s3Client();
+
 export async function POST(
   request: NextRequest,
   ctx: RouteContext<'/api/products/[id]/photos'>
@@ -18,7 +20,8 @@ export async function POST(
     });
   }
 
-  // TODO upload to s3
+  const response = await s3.upload(file);
+
   // TODO return file s3 url
 
   return new NextResponse('ok');
@@ -29,8 +32,7 @@ export async function GET(
   ctx: RouteContext<'/api/products/[id]/photos'>
 ) {
   try {
-    const client = await s3Client();
-    const file = await client.get('index.html');
+    const file = await s3.get('index.html');
 
     return new NextResponse(file);
   } catch (error) {
