@@ -40,9 +40,7 @@ export default function RootLayout({
       <body
         className={`${cinzelDecorative.variable} ${roboto.variable} ${robotoMono.variable} antialiased`}
       >
-        <AppProvider>
-          {children}
-        </AppProvider>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );
