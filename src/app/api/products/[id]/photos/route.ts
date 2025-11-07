@@ -7,6 +7,17 @@ export async function POST(
 ) {
   const data = await request.formData();
   const file: File = data.get('file') as File;
+
+  if (!file) {
+    return new NextResponse('Missing document', { status: 400 });
+  }
+
+  if (!(file instanceof File)) {
+    return new NextResponse('Uploaded document is not a File', {
+      status: 400,
+    });
+  }
+
   // TODO upload to s3
   // TODO return file s3 url
 
