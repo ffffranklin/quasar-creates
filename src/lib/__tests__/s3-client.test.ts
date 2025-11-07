@@ -2,9 +2,23 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { s3Client } from '@/lib/s3-client';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
-const { sendStub } = vi.hoisted(() => ({
-  sendStub: vi.fn(async () => {}),
-}));
+const { sendStub } = vi.hoisted(() => {
+  const mockedClientOutput = async () => clientOutput;
+  const clientOutput = {
+    $metadata: {
+      // httpStatusCode?: number;
+      // requestId?: string;
+      // extendedRequestId?: string;
+      // cfId?: string;
+      // attempts?: number;
+      // totalRetryDelay?: number;
+    },
+  };
+
+  return {
+    sendStub: vi.fn(mockedClientOutput),
+  };
+});
 
 const { MockS3Client } = vi.hoisted(() => ({
   MockS3Client: class {
