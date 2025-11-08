@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { s3Client } from '@/lib/s3-client';
+import { s3Client, S3ClientSingleton } from '@/lib/s3-client';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 const { sendStub } = vi.hoisted(() => {
@@ -40,8 +40,13 @@ describe('S3Client', () => {
   });
 
   describe('when file uploaded', () => {
+    let client: S3ClientSingleton;
+
+    beforeEach(() => {
+      client = s3Client();
+    });
+
     it('should throw if file not provided', async () => {
-      const client = s3Client();
       const file = undefined as unknown as File;
       const expected =
         'Unable to upload bucket from S3, file contents are undefined';
@@ -63,5 +68,7 @@ describe('S3Client', () => {
       expect(putCommand.input.Key).toEqual(`assets/${filename}`);
       expect(putCommand.input.Body).toEqual(expect.any(Buffer));
     });
+
+    it('should nest file in product id directory', async () => {});
   });
 });
