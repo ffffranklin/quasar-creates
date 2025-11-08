@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { s3Client } from '@/lib/s3-client';
+import { UploadPhotosResponse } from '@/lib/types/api';
 
 const s3 = s3Client();
 
@@ -9,6 +10,15 @@ export async function POST(
 ) {
   const data = await request.formData();
   const file: File = data.get('file') as File;
+  const productId: string = data.get('productId') as string;
+
+  if (!productId) {
+    return new NextResponse('Missing required product ID', { status: 400 });
+  }
+
+  if (Number.isNaN(parseInt(productId))) {
+    return new NextResponse('Product ID not parseable', { status: 400 });
+  }
 
   if (!file) {
     return new NextResponse('Missing document', { status: 400 });
@@ -20,11 +30,22 @@ export async function POST(
     });
   }
 
-  const response = await s3.upload(file);
+  // upload to s3
+  const { location, error } = await s3.upload(parseInt(productId), file);
 
-  // TODO return file s3 url
+  if (error) {
+    if (Error.isError(error)) {
+      return new NextResponse(error.message, { status: 400 });
+    }
 
-  return new NextResponse('ok');
+    throw error;
+  }
+
+  if (location) {
+    return NextResponse.json<UploadPhotosResponse>({
+      data: { location },
+    });
+  }
 }
 
 export async function GET(

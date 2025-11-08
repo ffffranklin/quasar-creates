@@ -17,8 +17,14 @@ async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
 
   for (const file of data.photos) {
     const form = new FormData();
+
     form.append('file', file);
+    form.append('productId', `${data.productId}`);
+
+    // TODO validate form data
+
     responses.push(await apiClient.postForm(url, form));
+
     // TODO update prisma with url response
   }
 

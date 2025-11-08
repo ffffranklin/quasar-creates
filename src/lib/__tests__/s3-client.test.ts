@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { s3Client, S3ClientSingleton } from '@/lib/s3-client';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { faker } from '@faker-js/faker/locale/en';
 
 const { sendStub } = vi.hoisted(() => {
   const mockedClientOutput = async () => clientOutput;
@@ -41,8 +42,10 @@ describe('S3Client', () => {
 
   describe('when file uploaded', () => {
     let client: S3ClientSingleton;
+    let productId: number;
 
     beforeEach(() => {
+      productId = faker.number.int();
       client = s3Client();
     });
 
@@ -51,7 +54,9 @@ describe('S3Client', () => {
       const expected =
         'Unable to upload bucket from S3, file contents are undefined';
 
-      await expect(() => client.upload(file)).rejects.toThrow(expected);
+      await expect(() => client.upload(productId, file)).rejects.toThrow(
+        expected
+      );
     });
 
     it('should send file contents', async () => {
@@ -59,13 +64,13 @@ describe('S3Client', () => {
       const filename = 'hello.png';
       const file = new File(['hello'], filename, { type: 'image/png' });
 
-      await client.upload(file);
+      await client.upload(productId, file);
 
       const putCommand = (sendStub.mock.calls[0] as any)[0] as PutObjectCommand;
 
       expect(sendStub).toHaveBeenCalledTimes(1);
       expect(putCommand.input.Bucket).toEqual('');
-      expect(putCommand.input.Key).toEqual(`assets/${filename}`);
+      expect(putCommand.input.Key).toEqual(`assets/${productId}/${filename}`);
       expect(putCommand.input.Body).toEqual(expect.any(Buffer));
     });
 
