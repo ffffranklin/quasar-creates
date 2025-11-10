@@ -5,9 +5,9 @@ import { faker } from '@faker-js/faker/locale/en';
 describe('uploadPhotos', () => {
   describe('when uploading photos', () => {
     it.skip('should return an array of photos', async () => {
-      const photos: any[] = [];
+      const photos: File[] = [];
       const productId = faker.number.int();
-      const response = await uploadPhotos(productId, photos);
+      const response = await uploadPhotos({ data: { productId, photos } });
 
       const expected = {};
       const actual = response;
