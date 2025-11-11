@@ -1,7 +1,10 @@
 import { env } from '@/config/env';
 
 import {
+  _Object,
   GetObjectCommand,
+  ListObjectsV2Command,
+  ListObjectsV2Output,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -51,6 +54,25 @@ class S3ClientSingleton {
     } catch (error) {
       console.log('Error getting object:', error);
     }
+  }
+
+  async listObjects(productId: number) {
+    const Bucket: string = env.AWS_S3_BUCKET || '';
+    const Prefix: string = `assets/${productId}`;
+    let result: null | Array<_Object> = null;
+
+    try {
+      const listCommand = new ListObjectsV2Command({ Bucket, Prefix });
+      const listOutput: ListObjectsV2Output = await s3c.send(listCommand);
+
+      if (listOutput?.Contents && listOutput.Contents.length > 0) {
+        result = listOutput.Contents;
+      }
+    } catch (error) {
+      console.error('Error listing objects:', error);
+    }
+
+    return result;
   }
 }
 
