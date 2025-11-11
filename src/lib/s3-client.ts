@@ -8,6 +8,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { s3Url } from '@/lib/utils';
 
 const s3c = new S3Client({ region: env.AWS_REGION });
 
@@ -26,7 +27,7 @@ class S3ClientSingleton {
     // convert to buffer to satisfy Body type signature
     const fileBuffer: Buffer = Buffer.from(fileArrayBuffer);
     const locationPath: string = `assets/${productId}/${file.name}`;
-    const location: string = `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${locationPath}`;
+    const location: string = s3Url(locationPath);
     const Bucket: string = env.AWS_S3_BUCKET || '';
     const Key: string = locationPath;
     const Body: Buffer = fileBuffer;

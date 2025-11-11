@@ -1,6 +1,6 @@
 import { s3Client } from '@/lib/s3-client';
 import { ListObjectsV2Output } from '@aws-sdk/client-s3';
-import { env } from '@/config/env';
+import { s3Url } from '@/lib/utils';
 
 interface PhotoInfo {
   location: string | null;
@@ -33,7 +33,7 @@ function parsePhotoObjects(objectContents: ListObjectsV2Output['Contents']) {
     const objectId: string = ETag || index.toString();
 
     if (Key) {
-      location = `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${Key}`;
+      location = s3Url(Key);
     }
 
     return {
