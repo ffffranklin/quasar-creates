@@ -1,6 +1,4 @@
 import { apiClient } from '@/lib/api-client';
-import type { MutationConfig } from '@/lib/react-query';
-import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 import type { AxiosResponse } from 'axios';
 
@@ -31,15 +29,4 @@ async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
   return responses;
 }
 
-interface UseUploadPhotosOptions {
-  mutationConfig?: MutationConfig<typeof uploadPhotos>;
-}
-
-function useUploadPhotos({ mutationConfig }: UseUploadPhotosOptions) {
-  return useMutation({
-    ...(mutationConfig || {}),
-    mutationFn: uploadPhotos,
-  });
-}
-
-export { uploadPhotos, useUploadPhotos };
+export { uploadPhotos };

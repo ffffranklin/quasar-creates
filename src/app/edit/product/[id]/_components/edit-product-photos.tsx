@@ -14,18 +14,11 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field';
-import { useUploadPhotos } from '@/features/photos/api/upload-photos';
+import { uploadPhotos } from '@/features/photos/api/upload-photos';
 
 function EditProductPhotos({ id }: { id: number }) {
   const [status, setStatus] = useState('idle');
   const inputRef = useRef(null);
-  const uploadPhotosMutation = useUploadPhotos({
-    mutationConfig: {
-      onSuccess: () => {
-        setStatus('successfully uploaded');
-      },
-    },
-  });
 
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     async (evt) => {
@@ -33,7 +26,7 @@ function EditProductPhotos({ id }: { id: number }) {
 
       if (fileList && fileList.length > 0) {
         setStatus('files selected');
-        uploadPhotosMutation.mutate({
+        const resp = await uploadPhotos({
           data: {
             productId: id,
             photos: Array.from(fileList),
@@ -41,7 +34,7 @@ function EditProductPhotos({ id }: { id: number }) {
         });
       }
     },
-    [id, uploadPhotosMutation]
+    [id]
   );
 
   return (
