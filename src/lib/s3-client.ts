@@ -27,7 +27,7 @@ class S3ClientSingleton {
     // convert to buffer to satisfy Body type signature
     const fileBuffer: Buffer = Buffer.from(fileArrayBuffer);
     const locationPath: string = `assets/${productId}/${file.name}`;
-    const location: string = s3Url(locationPath);
+    const location: string = s3Url(locationPath).toString();
     const Bucket: string = env.AWS_S3_BUCKET || '';
     const Key: string = locationPath;
     const Body: Buffer = fileBuffer;

@@ -33,7 +33,7 @@ function parsePhotoObjects(objectContents: ListObjectsV2Output['Contents']) {
     const objectId: string = ETag || index.toString();
 
     if (Key) {
-      location = s3Url(Key);
+      location = s3Url(Key).toString();
     }
 
     return {

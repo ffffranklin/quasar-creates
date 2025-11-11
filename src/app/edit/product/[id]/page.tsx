@@ -5,6 +5,7 @@ import { getProductById } from '@/features/products/api/get-product-by-id';
 import { EditProductPhotos } from '@/app/edit/product/[id]/_components/edit-product-photos';
 import { Fragment } from 'react';
 import { getPhotos } from '@/features/photos/api/get-photos';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Edit Product Page',
@@ -32,8 +33,10 @@ export default async function EditProductPage({
       ) : (
         <Fragment>
           {photos.map(({ location, objectId }) => (
-            <img
+            <Image
               key={objectId}
+              width={100}
+              height={100}
               src={location || ''}
               alt={`Photo of "${product.title}" product`}
             />
