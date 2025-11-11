@@ -31,7 +31,7 @@ export default async function EditProductPage({
         <div>Product not found</div>
       ) : (
         <Fragment>
-          <EditProductPhotos id={product.id} photos={photos} />
+          <EditProductPhotos product={product} photos={photos} />
           <EditProductForm
             id={product.id}
             title={product.title}

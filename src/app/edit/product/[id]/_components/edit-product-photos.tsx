@@ -16,54 +16,31 @@ import {
 } from '@/components/ui/field';
 import { uploadPhotos } from '@/features/photos/api/upload-photos';
 import { PhotoInfo } from '@/features/photos/api/get-photos';
-import Image from 'next/image';
+import { PhotosView } from './photos-view';
+import { Product } from '@/lib/types';
 
-interface PhotosViewProps {
+interface EditProductPhotosProps {
+  product: Product;
   photos: PhotoInfo[];
 }
-
-function PhotosView({ photos }: PhotosViewProps) {
-  return (
-    <div className="flex border-2 p-2 mb-4">
-      {photos.map(({ location, objectId }) => (
-        <Image
-          className="pr-4"
-          key={objectId}
-          width={100}
-          height={100}
-          src={location || ''}
-          alt={`Photo of product with id: {id}`}
-        />
-      ))}
-    </div>
-  );
-}
-
-function EditProductPhotos({
-  id,
-  photos,
-}: {
-  id: number;
-  photos: PhotoInfo[];
-}) {
+function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
   const [status, setStatus] = useState('idle');
   const inputRef = useRef(null);
 
-  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+  const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     async (evt) => {
       const fileList: FileList | null = evt.target?.files || null;
 
       if (fileList && fileList.length > 0) {
-        setStatus('files selected');
-        const resp = await uploadPhotos({
+        await uploadPhotos({
           data: {
-            productId: id,
+            productId: product.id,
             photos: Array.from(fileList),
           },
         });
       }
     },
-    [id]
+    [product]
   );
 
   return (
@@ -72,7 +49,15 @@ function EditProductPhotos({
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="photos">Photos</FieldLabel>
-            <PhotosView photos={photos} />
+            <PhotosView>
+              {photos.map(({ location, objectId }) => (
+                <PhotosView.Image
+                  key={objectId}
+                  productName={product.title}
+                  location={location}
+                />
+              ))}
+            </PhotosView>
             <div style={{ width: '50%' }}>
               <Input
                 ref={inputRef}
@@ -80,7 +65,7 @@ function EditProductPhotos({
                 name="photos[]"
                 type="file"
                 multiple={true}
-                onChange={handleChange}
+                onChange={handleFileChange}
               />
             </div>
             <FieldError errors={[{ message: status }]}></FieldError>
