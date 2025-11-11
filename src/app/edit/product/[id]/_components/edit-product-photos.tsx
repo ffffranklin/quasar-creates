@@ -15,8 +15,16 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { uploadPhotos } from '@/features/photos/api/upload-photos';
+import { PhotoInfo } from '@/features/photos/api/get-photos';
+import Image from 'next/image';
 
-function EditProductPhotos({ id }: { id: number }) {
+function EditProductPhotos({
+  id,
+  photos,
+}: {
+  id: number;
+  photos: PhotoInfo[];
+}) {
   const [status, setStatus] = useState('idle');
   const inputRef = useRef(null);
 
@@ -43,6 +51,18 @@ function EditProductPhotos({ id }: { id: number }) {
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="photos">Photos</FieldLabel>
+            <div className="flex border-2 p-2 mb-4">
+              {photos.map(({ location, objectId }) => (
+                <Image
+                  className="pr-4"
+                  key={objectId}
+                  width={100}
+                  height={100}
+                  src={location || ''}
+                  alt={`Photo of product with id: ${id}`}
+                />
+              ))}
+            </div>
             <Input
               ref={inputRef}
               id="photos"

@@ -2,7 +2,7 @@ import { s3Client } from '@/lib/s3-client';
 import { ListObjectsV2Output } from '@aws-sdk/client-s3';
 import { s3Url } from '@/lib/utils';
 
-interface PhotoInfo {
+export interface PhotoInfo {
   location: string | null;
   objectId: string;
 }
