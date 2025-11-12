@@ -1,32 +1,19 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import {
-  ChangeEventHandler,
-  Fragment,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { ChangeEventHandler, Fragment, useCallback, useState } from 'react';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { uploadPhotos } from '@/features/photos/api/upload-photos';
 import { PhotoInfo } from '@/features/photos/api/get-photos';
 import { PhotosView } from './photos-view';
 import { Product } from '@/lib/types';
+import styles from './edit-product-photos.module.css';
 
 interface EditProductPhotosProps {
   product: Product;
   photos: PhotoInfo[];
 }
 function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
-  const [status, setStatus] = useState('idle');
-  const inputRef = useRef(null);
-
   const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     async (evt) => {
       const fileList: FileList | null = evt.target?.files || null;
@@ -49,6 +36,7 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="photos">Photos</FieldLabel>
+
             <PhotosView>
               {photos.map(({ location, objectId }) => (
                 <PhotosView.Image
@@ -58,9 +46,9 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
                 />
               ))}
             </PhotosView>
-            <div style={{ width: '50%' }}>
+
+            <div className={styles.fileUploadButtonContainer}>
               <Input
-                ref={inputRef}
                 id="photos"
                 name="photos[]"
                 type="file"
@@ -68,7 +56,6 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
                 onChange={handleFileChange}
               />
             </div>
-            <FieldError errors={[{ message: status }]}></FieldError>
           </Field>
         </FieldGroup>
       </form>
