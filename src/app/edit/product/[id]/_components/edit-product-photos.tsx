@@ -1,7 +1,12 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { ChangeEventHandler, Fragment, useCallback, useState } from 'react';
+import {
+  ChangeEventHandler,
+  Fragment,
+  ReactEventHandler,
+  useCallback,
+} from 'react';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { uploadPhotos } from '@/features/photos/api/upload-photos';
 import { PhotoInfo } from '@/features/photos/api/get-photos';
@@ -13,6 +18,7 @@ interface EditProductPhotosProps {
   product: Product;
   photos: PhotoInfo[];
 }
+
 function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
   const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     async (evt) => {
@@ -30,6 +36,11 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
     [product]
   );
 
+  const handleDeleteClick = useCallback<ReactEventHandler>(async (evt) => {
+    evt.preventDefault();
+    console.log('Delete photo');
+  }, []);
+
   return (
     <Fragment>
       <form>
@@ -39,11 +50,15 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
 
             <PhotosView>
               {photos.map(({ location, objectId }) => (
-                <PhotosView.Image
+                <PhotosView.Tile
                   key={objectId}
-                  productName={product.title}
-                  location={location}
-                />
+                  onDeleteClick={handleDeleteClick}
+                >
+                  <PhotosView.Image
+                    productName={product.title}
+                    location={location}
+                  />
+                </PhotosView.Tile>
               ))}
             </PhotosView>
 
