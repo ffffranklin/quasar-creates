@@ -1,18 +1,14 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import {
-  ChangeEventHandler,
-  Fragment,
-  ReactEventHandler,
-  useCallback,
-} from 'react';
+import { ChangeEventHandler, Fragment, useCallback } from 'react';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { uploadPhotos } from '@/features/photos/api/upload-photos';
 import { PhotoInfo } from '@/features/photos/api/get-photos';
 import { PhotosView } from './photos-view';
 import { Product } from '@/lib/types';
 import styles from './edit-product-photos.module.css';
+import { deletePhoto } from '@/features/photos/api/delete-photo';
 
 interface EditProductPhotosProps {
   product: Product;
@@ -36,10 +32,21 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
     [product]
   );
 
-  const handleDeleteClick = useCallback<ReactEventHandler>(async (evt) => {
-    evt.preventDefault();
-    console.log('Delete photo');
-  }, []);
+  const handleDeleteClick = useCallback<(location: string | null) => void>(
+    async (location: string | null) => {
+      if (!location) throw new Error('Cant delete without target location');
+
+      const locationUrl = new URL(location);
+      const pathname = locationUrl.pathname.substring(1);
+
+      try {
+        await deletePhoto(product.id, pathname);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [product]
+  );
 
   return (
     <Fragment>
@@ -52,6 +59,7 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
               {photos.map(({ location, objectId }) => (
                 <PhotosView.Tile
                   key={objectId}
+                  location={location}
                   onDeleteClick={handleDeleteClick}
                 >
                   <PhotosView.Image

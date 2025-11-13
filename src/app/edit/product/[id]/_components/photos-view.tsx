@@ -2,7 +2,7 @@ import { PhotoInfo } from '@/features/photos/api/get-photos';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import { ReactEventHandler } from 'react';
+import React from 'react';
 
 interface PhotosViewProps {
   children?: React.ReactNode;
@@ -14,8 +14,9 @@ interface PhotosViewImageProps {
 }
 
 interface PhotosViewTileProps {
-  onDeleteClick?: ReactEventHandler;
   children: React.ReactNode;
+  location: PhotoInfo['location'];
+  onDeleteClick?: (location: PhotoInfo['location']) => void;
 }
 
 export function PhotosView({ children }: PhotosViewProps) {
@@ -37,8 +38,9 @@ PhotosView.Image = function PhotosViewImage({
 };
 
 PhotosView.Tile = function PhotosViewTile({
-  onDeleteClick,
   children,
+  location,
+  onDeleteClick,
 }: PhotosViewTileProps) {
   return (
     <div className="group relative size-[100px] mr-4">
@@ -51,7 +53,13 @@ PhotosView.Tile = function PhotosViewTile({
           className="absolute z-10 inset-8 cursor-pointer"
           size={'icon'}
           title="Delete photo"
-          onClick={onDeleteClick}
+          onClick={(evt) => {
+            evt.preventDefault();
+
+            if (onDeleteClick) {
+              onDeleteClick(location);
+            }
+          }}
         >
           <Trash2 />
         </Button>
