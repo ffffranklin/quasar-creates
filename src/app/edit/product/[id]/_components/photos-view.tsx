@@ -20,7 +20,7 @@ interface PhotosViewTileProps {
 }
 
 export function PhotosView({ children }: PhotosViewProps) {
-  return <div className="flex h-[100px] border-2 p-2 mb-4">{children}</div>;
+  return <div className="flex h-[120px] border-2 p-2 mb-4">{children}</div>;
 }
 
 PhotosView.Image = function PhotosViewImage({
@@ -28,12 +28,14 @@ PhotosView.Image = function PhotosViewImage({
   location,
 }: PhotosViewImageProps) {
   return (
-    <Image
-      width={100}
-      height={100}
-      src={location || ''}
-      alt={`Photo of product with id: ${productName}`}
-    />
+    <figure className="overflow-hidden size-[100px]">
+      <Image
+        fill={true}
+        style={{ objectFit: 'cover' }}
+        src={location || ''}
+        alt={`Photo of product with id: ${productName}`}
+      />
+    </figure>
   );
 };
 
