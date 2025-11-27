@@ -32,12 +32,9 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
     [product]
   );
 
-  const handleDeleteClick = useCallback<(location: string | null) => void>(
-    async (location: string | null) => {
-      if (!location) throw new Error('Cant delete without target location');
-
-      const locationUrl = new URL(location);
-      const pathname = locationUrl.pathname.substring(1);
+  const handleDeleteClick = useCallback<(pathname: string | null) => void>(
+    async (pathname: string | null) => {
+      if (!pathname) throw new Error('Cant delete without target location');
 
       try {
         await deletePhoto(product.id, pathname);
@@ -56,10 +53,10 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
             <FieldLabel htmlFor="photos">Photos</FieldLabel>
 
             <PhotosView>
-              {photos.map(({ location, objectId }) => (
+              {photos.map(({ location, locationPathname, objectId }) => (
                 <PhotosView.Tile
                   key={objectId}
-                  location={location}
+                  location={locationPathname}
                   onDeleteClick={handleDeleteClick}
                 >
                   <PhotosView.Image
