@@ -4,6 +4,7 @@ import { s3Url } from '@/lib/utils';
 
 export interface PhotoInfo {
   location: string | null;
+  locationPathname: string | null;
   objectId: string;
 }
 
@@ -23,22 +24,27 @@ export async function getPhotos(productId: number): Promise<PhotoInfo[]> {
   return photos;
 }
 
-function parsePhotoObjects(objectContents: ListObjectsV2Output['Contents']) {
+function parsePhotoObjects(
+  objectContents: ListObjectsV2Output['Contents']
+): PhotoInfo[] {
   if (!objectContents) {
     return [];
   }
 
-  return objectContents.map(({ Key, ETag }, index) => {
-    let location: string | null = null;
+  return objectContents.map(({ Key, ETag }, index): PhotoInfo => {
     const objectId: string = ETag || index.toString();
+    let location: string | null = null;
+    let locationPathname: string | null = null;
 
     if (Key) {
       location = s3Url(Key).toString();
+      locationPathname = new URL(location).pathname.substring(1);
     }
 
     return {
       objectId,
       location,
+      locationPathname,
     };
   });
 }
