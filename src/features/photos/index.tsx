@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { deletePhoto } from '@/features/photos/api/delete-photo';
+import { useUploadPhotos } from '@/features/photos/api/upload-photos';
 
 function useDeletePhoto() {
   const deletePhotoCallback = useCallback<(key: string | null) => void>(
@@ -18,4 +19,4 @@ function useDeletePhoto() {
   return [deletePhotoCallback];
 }
 
-export { useDeletePhoto };
+export { useDeletePhoto, useUploadPhotos };

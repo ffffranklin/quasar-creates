@@ -1,14 +1,13 @@
 'use client';
 
+import styles from './edit-product-photos.module.css';
 import { Input } from '@/components/ui/input';
-import { ChangeEventHandler, Fragment, useCallback } from 'react';
+import { ChangeEvent, Fragment } from 'react';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { uploadPhotos } from '@/features/photos/api/upload-photos';
+import { useDeletePhoto, useUploadPhotos } from '@/features/photos';
 import { PhotoInfo } from '@/features/photos/api/get-photos';
 import { PhotosView } from './photos-view';
 import { Product } from '@/lib/types';
-import styles from './edit-product-photos.module.css';
-import { useDeletePhoto } from '@/features/photos/photos';
 
 interface EditProductPhotosProps {
   product: Product;
@@ -17,22 +16,10 @@ interface EditProductPhotosProps {
 
 function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
   const [deletePhoto] = useDeletePhoto();
-  const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    async (evt) => {
-      const fileList: FileList | null = evt.target?.files || null;
+  const [uploadPhotos] = useUploadPhotos(product);
 
-      if (fileList && fileList.length > 0) {
-        await uploadPhotos({
-          data: {
-            productId: product.id,
-            photos: Array.from(fileList),
-          },
-        });
-      }
-    },
-    [product]
-  );
-
+  const handleFileChange = (evt: ChangeEvent<HTMLInputElement>) =>
+    uploadPhotos(evt.target?.files || null);
   const handleDeleteClick = (pathname: string | null) => deletePhoto(pathname);
 
   return (

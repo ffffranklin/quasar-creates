@@ -1,6 +1,8 @@
 import { apiClient } from '@/lib/api-client';
 import { z } from 'zod';
 import type { AxiosResponse } from 'axios';
+import { Product } from '@/lib/types';
+import { useCallback } from 'react';
 
 const uploadPhotosInputSchema = z.object({
   productId: z.number(),
@@ -29,4 +31,22 @@ async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
   return responses;
 }
 
-export { uploadPhotos };
+const useUploadPhotos = (product: Product) => {
+  const uploadFiles = useCallback(
+    async (fileList: FileList | null) => {
+      if (fileList && fileList.length > 0) {
+        await uploadPhotos({
+          data: {
+            productId: product.id,
+            photos: Array.from(fileList),
+          },
+        });
+      }
+    },
+    [product]
+  );
+
+  return [uploadFiles];
+};
+
+export { uploadPhotos, useUploadPhotos };
