@@ -78,11 +78,11 @@ class S3ClientSingleton {
     return result;
   }
 
-  async deleteObject(productId: number, filePath: string) {
+  async deleteObject(Key: string) {
     const Bucket: string = env.AWS_S3_BUCKET || '';
 
     try {
-      const deleteCommand = new DeleteObjectCommand({ Bucket, Key: filePath });
+      const deleteCommand = new DeleteObjectCommand({ Bucket, Key });
       const deleteOutput: DeleteObjectOutput = await s3c.send(deleteCommand);
 
       console.log(deleteOutput);

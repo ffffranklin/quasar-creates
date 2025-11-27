@@ -8,7 +8,7 @@ import { PhotoInfo } from '@/features/photos/api/get-photos';
 import { PhotosView } from './photos-view';
 import { Product } from '@/lib/types';
 import styles from './edit-product-photos.module.css';
-import { deletePhoto } from '@/features/photos/api/delete-photo';
+import { useDeletePhoto } from '@/features/photos/photos';
 
 interface EditProductPhotosProps {
   product: Product;
@@ -16,6 +16,7 @@ interface EditProductPhotosProps {
 }
 
 function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
+  const [deletePhoto] = useDeletePhoto();
   const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     async (evt) => {
       const fileList: FileList | null = evt.target?.files || null;
@@ -32,18 +33,7 @@ function EditProductPhotos({ product, photos }: EditProductPhotosProps) {
     [product]
   );
 
-  const handleDeleteClick = useCallback<(pathname: string | null) => void>(
-    async (pathname: string | null) => {
-      if (!pathname) throw new Error('Cant delete without target location');
-
-      try {
-        await deletePhoto(product.id, pathname);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [product]
-  );
+  const handleDeleteClick = (pathname: string | null) => deletePhoto(pathname);
 
   return (
     <Fragment>
