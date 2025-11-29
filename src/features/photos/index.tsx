@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { deletePhoto } from '@/features/photos/api/delete-photo';
-import { useUploadPhotos } from '@/features/photos/api/upload-photos';
+import { Product } from '@/lib/types';
+import { uploadPhotos } from '@/features/photos/api/upload-photos';
 
 function useDeletePhoto() {
   const deletePhotoCallback = useCallback<(key: string | null) => void>(
@@ -18,5 +19,23 @@ function useDeletePhoto() {
 
   return [deletePhotoCallback];
 }
+
+const useUploadPhotos = (product: Product) => {
+  const uploadFiles = useCallback(
+    async (fileList: FileList | null) => {
+      if (fileList && fileList.length > 0) {
+        await uploadPhotos({
+          data: {
+            productId: product.id,
+            photos: Array.from(fileList),
+          },
+        });
+      }
+    },
+    [product]
+  );
+
+  return [uploadFiles];
+};
 
 export { useDeletePhoto, useUploadPhotos };

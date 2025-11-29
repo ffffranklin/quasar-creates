@@ -1,9 +1,11 @@
-import { apiClient } from '@/lib/api-client';
-import { z } from 'zod';
-import type { AxiosResponse } from 'axios';
-import { Product } from '@/lib/types';
-import { useCallback } from 'react';
+'use server';
 
+import { z } from 'zod';
+
+import { s3Client } from '@/lib/s3-client';
+import { UploadPhotosResponse } from '@/lib/types/api';
+
+const s3 = s3Client();
 const uploadPhotosInputSchema = z.object({
   productId: z.number(),
   photos: z.array(z.file()),
@@ -11,19 +13,51 @@ const uploadPhotosInputSchema = z.object({
 
 type UploadPhotosInput = z.infer<typeof uploadPhotosInputSchema>;
 
+async function uploadPhoto(
+  productId: string,
+  file: File
+): Promise<UploadPhotosResponse | undefined> {
+  if (!productId) {
+    throw new Error('Missing required product ID');
+  }
+
+  if (Number.isNaN(parseInt(productId))) {
+    throw new Error('Product ID not parseable');
+  }
+
+  if (!file) {
+    throw new Error('Missing document');
+  }
+
+  if (!(file instanceof File)) {
+    throw new Error('Uploaded document is not a File');
+  }
+
+  // upload to s3
+  const { location, error } = await s3.upload(parseInt(productId), file);
+
+  if (error) {
+    if (Error.isError(error)) {
+      console.error(error);
+    }
+
+    throw error;
+  }
+
+  if (location) {
+    return {
+      data: { location },
+    };
+  }
+}
+
 async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
-  const url = `/products/${data.productId}/photos`;
-  const responses: AxiosResponse[] = [];
+  const responses: (UploadPhotosResponse | undefined)[] = [];
 
   for (const file of data.photos) {
-    const form = new FormData();
-
-    form.append('file', file);
-    form.append('productId', `${data.productId}`);
-
     // TODO validate form data
 
-    responses.push(await apiClient.postForm(url, form));
+    responses.push(await uploadPhoto(data.productId.toString(), file));
 
     // TODO update prisma with url response
   }
@@ -31,22 +65,4 @@ async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
   return responses;
 }
 
-const useUploadPhotos = (product: Product) => {
-  const uploadFiles = useCallback(
-    async (fileList: FileList | null) => {
-      if (fileList && fileList.length > 0) {
-        await uploadPhotos({
-          data: {
-            productId: product.id,
-            photos: Array.from(fileList),
-          },
-        });
-      }
-    },
-    [product]
-  );
-
-  return [uploadFiles];
-};
-
-export { uploadPhotos, useUploadPhotos };
+export { uploadPhoto, uploadPhotos };
