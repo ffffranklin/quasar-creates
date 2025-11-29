@@ -1,4 +1,4 @@
-import { PhotoInfo } from '@/features/photos/api/get-photos';
+import { PhotoInfo } from '@/features/photos/actions/get-photos';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';

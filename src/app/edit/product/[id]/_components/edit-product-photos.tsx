@@ -4,10 +4,11 @@ import styles from './edit-product-photos.module.css';
 import { Input } from '@/components/ui/input';
 import { ChangeEvent, Fragment } from 'react';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { useDeletePhoto, useUploadPhotos } from '@/features/photos';
-import { PhotoInfo } from '@/features/photos/api/get-photos';
+import { PhotoInfo } from '@/features/photos/actions/get-photos';
 import { PhotosView } from './photos-view';
 import { Product } from '@/lib/types';
+import { useDeletePhoto } from '@/features/photos/hooks/use-delete-photo';
+import { useUploadPhotos } from '@/features/photos/hooks/use-upload-photos';
 
 interface EditProductPhotosProps {
   product: Product;

@@ -4,7 +4,7 @@ import { EditProductForm } from '@/app/edit/product/[id]/_components/edit-produc
 import { getProductById } from '@/features/products/api/get-product-by-id';
 import { EditProductPhotos } from '@/app/edit/product/[id]/_components/edit-product-photos';
 import { Fragment } from 'react';
-import { getPhotos, PhotoInfo } from '@/features/photos/api/get-photos';
+import { getPhotos, PhotoInfo } from '@/features/photos/actions/get-photos';
 
 export const metadata: Metadata = {
   title: 'Edit Product Page',

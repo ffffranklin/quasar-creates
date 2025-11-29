@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { uploadPhotos } from '@/features/photos/api/upload-photos';
+import { uploadPhotos } from '@/features/photos/actions/upload-photos';
 import { faker } from '@faker-js/faker/locale/en';
 
 describe('uploadPhotos', () => {
