@@ -14,14 +14,14 @@ const uploadPhotosInputSchema = z.object({
 type UploadPhotosInput = z.infer<typeof uploadPhotosInputSchema>;
 
 async function uploadPhoto(
-  productId: string,
+  productId: number,
   file: File
 ): Promise<UploadPhotosResponse | undefined> {
   if (!productId) {
     throw new Error('Missing required product ID');
   }
 
-  if (Number.isNaN(parseInt(productId))) {
+  if (Number.isNaN(productId)) {
     throw new Error('Product ID not parseable');
   }
 
@@ -34,7 +34,7 @@ async function uploadPhoto(
   }
 
   // upload to s3
-  const { location, error } = await s3.upload(parseInt(productId), file);
+  const { location, error } = await s3.upload(productId, file);
 
   if (error) {
     if (Error.isError(error)) {
@@ -52,15 +52,11 @@ async function uploadPhoto(
 }
 
 async function uploadPhotos({ data }: { data: UploadPhotosInput }) {
-  const responses: (UploadPhotosResponse | undefined)[] = [];
-
-  for (const file of data.photos) {
-    // TODO validate form data
-
-    responses.push(await uploadPhoto(data.productId.toString(), file));
-
-    // TODO update prisma with url response
-  }
+  // TODO validate form data
+  const upload = (photo: File) => uploadPhoto(data.productId, photo);
+  const requests = data.photos.map(upload);
+  const responses = await Promise.allSettled(requests);
+  // TODO update prisma with url response
 
   return responses;
 }
